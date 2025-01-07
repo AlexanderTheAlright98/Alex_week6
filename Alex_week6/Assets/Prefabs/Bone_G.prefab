@@ -31,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0.6809373, y: -0, z: -0, w: 0.7323418}
   m_LocalPosition: {x: -2.427133, y: 6.5500054, z: -0.1236912}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 1.8, y: 1.8, z: 1.8}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -129,8 +129,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   xRange: 4.49
+  despawnYRange: -1.85
+  targetValue: 2
   randomForce: {x: 7.5, y: 15}
   randomTorque: {x: 0.2, y: 1}
+  targetExplosion: {fileID: 625621707174889904, guid: ef43e5aef41c142fb85a7658a397dc75, type: 3}
 --- !u!65 &4345417241727587040
 BoxCollider:
   m_ObjectHideFlags: 0

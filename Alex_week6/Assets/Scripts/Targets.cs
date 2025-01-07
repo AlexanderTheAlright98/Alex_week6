@@ -7,7 +7,10 @@ public class Targets : MonoBehaviour
     Rigidbody targetRb;
 
     public float xRange = 4.49f;
+    public float despawnYRange = -1.85f;
+    public int targetValue;
     public Vector2 randomForce, randomTorque;
+    public ParticleSystem targetExplosion;
     void Start()
     {
         targetRb = GetComponent<Rigidbody>();
@@ -16,23 +19,35 @@ public class Targets : MonoBehaviour
         targetRb.AddTorque(Random.Range(randomTorque.x, randomTorque.y), Random.Range(randomTorque.x, randomTorque.y), Random.Range(randomTorque.x, randomTorque.y), ForceMode.Impulse);
         transform.position = new Vector3(Random.Range(-xRange, xRange), -1, 0);
     }
+    void Update()
+    {
+        if (transform.position.y < despawnYRange)
+        {
+            if (gameObject.CompareTag("Good"))
+            {
+                FindFirstObjectByType<GameManager>().updateScore(-1);
+                Destroy(gameObject);
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
+        }
+    }
     void OnMouseDown()
     {
-        if (gameObject.CompareTag("Good")) 
+        FindFirstObjectByType<GameManager>().updateScore(targetValue);
+        Destroy(Instantiate(targetExplosion, transform.position, targetExplosion.transform.rotation), 2);
+
+        if (gameObject.CompareTag("Bad")) 
         {
-            FindFirstObjectByType<GameManager>().score++;
+            FindFirstObjectByType<GameManager>().updateLives(-1);
+            Destroy(gameObject);
+        }
+        else
+        {
             Destroy(gameObject);
         }
 
-        else if (gameObject.CompareTag("Bad"))
-        {
-            FindFirstObjectByType<GameManager>().lives--;
-            Destroy(gameObject);
-        }
-
-    }
-    private void OnTriggerEnter(Collider other)
-    {
-        Destroy(gameObject);
     }
 }

@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour
     public bool isPlaying;
     void Start()
     {
+        scoreTxt.text = "SCORE: 0";
+        livesTxt.text = "LIVES: 3";
         score = 0;
         lives = 3;
         Time.timeScale = 1;
@@ -22,18 +24,37 @@ public class GameManager : MonoBehaviour
     }
     void Update()
     {
-        scoreTxt.text = "SCORE: " + score.ToString();
-        livesTxt.text = "LIVES: " + lives.ToString();
-        if (lives == 0)
+        if (!isPlaying)
         {
-            isPlaying = false;
-            gameOverTxt.text = "GAME OVER!";
+            gameOverTxt.text = "GAME OVER";
             Time.timeScale = 0;
 
             if (Input.GetKeyDown(KeyCode.R))
             {
-                SceneManager.LoadScene(0);
+                SceneManager.LoadScene(1);
             }
+        }
+
+    }
+    public void updateLives(int livesChange)
+    {
+        lives += livesChange;
+        livesTxt.text = "LIVES: " + lives;
+        
+        if (lives == 0)
+        {
+            isPlaying = false;
+        }
+    }
+    public void updateScore(int scoreChange)
+    {
+        score += scoreChange;
+        scoreTxt.text = "SCORE: " + score;
+
+        if (score < 0)
+        {
+            score = 0;
+            scoreTxt.text = "SCORE: 0";
         }
     }
     IEnumerator spawnTarget()

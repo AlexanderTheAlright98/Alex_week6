@@ -129,8 +129,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   xRange: 4.49
+  despawnYRange: -1.85
+  targetValue: -1
   randomForce: {x: 7.5, y: 15}
   randomTorque: {x: 0.2, y: 1}
+  targetExplosion: {fileID: 7535607469619513247, guid: ac10190cf200c4f7e881ca8e41d3d760, type: 3}
 --- !u!65 &-6961935543773577680
 BoxCollider:
   m_ObjectHideFlags: 0
