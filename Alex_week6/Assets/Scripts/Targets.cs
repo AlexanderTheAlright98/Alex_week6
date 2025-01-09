@@ -33,6 +33,10 @@ public class Targets : MonoBehaviour
                 Destroy(gameObject);
             }
         }
+        if (FindFirstObjectByType<GameManager>().isPlaying == false)
+        {
+            Destroy(gameObject);
+        }
     }
     void OnMouseDown()
     {

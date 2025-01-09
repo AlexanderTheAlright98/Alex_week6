@@ -8,33 +8,46 @@ public class GameManager : MonoBehaviour
 {
     public List<GameObject> targets;
     public Transform targetParent;
-    public TMP_Text scoreTxt, livesTxt, gameOverTxt;
+    public TMP_Text scoreTxt, livesTxt, gameOverTxt, finalScoreTxt, highScoreTxt;
+    public GameObject gameOverScreen, inGameUI, newHighScore;
 
     public int score, lives;
     public bool isPlaying;
+    public float spawnRate1, spawnRate2;
     void Start()
     {
+        Time.timeScale = 1;
+    }
+    public void startGameState(float difficulty)
+    {
+        spawnRate1 /= difficulty + 0.2f;
+        spawnRate2 /= difficulty;
         scoreTxt.text = "SCORE: 0";
         livesTxt.text = "LIVES: 3";
         score = 0;
         lives = 3;
-        Time.timeScale = 1;
         isPlaying = true;
         StartCoroutine(spawnTarget());
     }
-    void Update()
+    void gameOverState()
     {
-        if (!isPlaying)
+        isPlaying = false;
+        Time.timeScale = (0);
+        gameOverTxt.text = "GAME OVER";
+        finalScoreTxt.text = "SCORE: " + score;
+        highScoreTxt.text = "HIGHSCORE: " + PlayerPrefs.GetInt("Highscore");
+        inGameUI.SetActive(false);
+        gameOverScreen.SetActive(true);
+
+        if (PlayerPrefs.GetInt("Highscore") < score)
         {
-            gameOverTxt.text = "GAME OVER";
-            Time.timeScale = 0;
-
-            if (Input.GetKeyDown(KeyCode.R))
-            {
-                SceneManager.LoadScene(1);
-            }
+            PlayerPrefs.SetInt("Highscore", score);
+            newHighScore.SetActive(true);
         }
-
+    }
+    public void restartGame()
+    {
+        SceneManager.LoadScene(0);
     }
     public void updateLives(int livesChange)
     {
@@ -43,7 +56,7 @@ public class GameManager : MonoBehaviour
         
         if (lives == 0)
         {
-            isPlaying = false;
+            gameOverState();
         }
     }
     public void updateScore(int scoreChange)
@@ -61,7 +74,7 @@ public class GameManager : MonoBehaviour
     {
         while (isPlaying)
         {
-            float spawnRate = Random.Range(0.33f, 1.75f);
+            float spawnRate = Random.Range(spawnRate1, spawnRate2);
 
             yield return new WaitForSeconds(spawnRate);
             int index = Random.Range(0, targets.Count);

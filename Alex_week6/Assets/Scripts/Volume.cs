@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine.SceneManagement;
 using UnityEngine.Rendering;
 
-public class UI : MonoBehaviour
+public class Volume : MonoBehaviour
 {
     public Slider musicVol;
 
@@ -13,9 +13,5 @@ public class UI : MonoBehaviour
     void Update()
     {
         GetComponent<AudioSource>().volume = musicVol.value;
-    }
-    public void startGame()
-    {
-        SceneManager.LoadScene(1);
     }
 }
