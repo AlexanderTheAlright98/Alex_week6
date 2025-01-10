@@ -46,10 +46,12 @@ public class Targets : MonoBehaviour
         if (gameObject.CompareTag("Bad")) 
         {
             FindFirstObjectByType<GameManager>().updateLives(-1);
+            FindFirstObjectByType<GameManager>().badSound();
             Destroy(gameObject);
         }
         else
         {
+            FindFirstObjectByType<GameManager>().goodSound();
             Destroy(gameObject);
         }
 

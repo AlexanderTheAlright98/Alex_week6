@@ -11,15 +11,23 @@ public class GameManager : MonoBehaviour
     public TMP_Text scoreTxt, livesTxt, gameOverTxt, finalScoreTxt, highScoreTxt;
     public GameObject gameOverScreen, inGameUI, newHighScore;
 
+    public AudioSource musicSource;
+    public AudioClip menuMusic, mainMusic, goodSFX, badSFX;
+
     public int score, lives;
     public bool isPlaying;
     public float spawnRate1, spawnRate2;
     void Start()
     {
         Time.timeScale = 1;
+        musicSource.clip = menuMusic;
+        musicSource.Play();
     }
     public void startGameState(float difficulty)
     {
+        musicSource.Stop();
+        musicSource.clip = mainMusic;
+        musicSource.Play();
         spawnRate1 /= difficulty + 0.2f;
         spawnRate2 /= difficulty;
         scoreTxt.text = "SCORE: 0";
@@ -29,20 +37,30 @@ public class GameManager : MonoBehaviour
         isPlaying = true;
         StartCoroutine(spawnTarget());
     }
+    public void goodSound()
+    {
+        musicSource.PlayOneShot(goodSFX);
+    }
+    public void badSound()
+    {
+        musicSource.PlayOneShot(badSFX);
+    }
     void gameOverState()
     {
         isPlaying = false;
         Time.timeScale = (0);
         gameOverTxt.text = "GAME OVER";
-        finalScoreTxt.text = "SCORE: " + score;
+        finalScoreTxt.text = "FINAL SCORE: " + score;
         highScoreTxt.text = "HIGHSCORE: " + PlayerPrefs.GetInt("Highscore");
         inGameUI.SetActive(false);
         gameOverScreen.SetActive(true);
 
         if (PlayerPrefs.GetInt("Highscore") < score)
         {
+            highScoreTxt.text = "OLD HIGHSCORE: " + PlayerPrefs.GetInt("Highscore");
             PlayerPrefs.SetInt("Highscore", score);
             newHighScore.SetActive(true);
+            finalScoreTxt.text = "NEW HIGHSCORE: " + score;
         }
     }
     public void restartGame()
